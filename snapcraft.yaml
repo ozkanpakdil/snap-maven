@@ -10,14 +10,10 @@ confinement: classic
 
 parts:
   mvn:
-    plugin: nil
+    plugin: dump
+    source: https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
     build-packages:
       - software-properties-common
-    override-pull: |
-      wget https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
-      tar -xvf apache-maven-3.8.6-bin.tar.gz
-      mv apache-maven-3.8.6 /opt/
-      echo "M2_HOME=/opt/apache-maven-3.8.6
-      PATH=$M2_HOME/bin:$PATH
-      export PATH
-      " >> ~/.bashrc
+apps:
+  test-geekbench4:
+    command: mvn
