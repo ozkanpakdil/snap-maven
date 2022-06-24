@@ -8,12 +8,20 @@ description: |
 grade: stable
 confinement: classic
 
+base: bare
+build-base: core18
+
 parts:
-  mvn:
+  maven:
     plugin: dump
     source: https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
+    source-subdir: bin/
+    filesets:
+      bin: [ usr/bin/* ]
+    stage:
+      - $bin
     build-packages:
       - software-properties-common
 apps:
-  test-geekbench4:
-    command: mvn
+  mvn:
+    command: bin/mvn
