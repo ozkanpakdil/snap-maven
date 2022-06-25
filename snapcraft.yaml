@@ -20,8 +20,11 @@ parts:
       bin: [ usr/bin/* ]
     stage:
       - $bin
+    stage-packages:
+      - java-common
     build-packages:
       - software-properties-common
+
 apps:
   mvn:
     command: bin/mvn
