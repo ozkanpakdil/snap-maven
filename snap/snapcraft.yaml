@@ -1,30 +1,38 @@
-name: maven-package
+name: mvn
 version: '3.8.6'
-summary: mvn 3.8.6
-description: |
-  https://github.com/ozkanpakdil/snap-maven
-  Source https://maven.apache.org/download.cgi
-    
+
+base: core20
 grade: stable
 confinement: classic
 
-base: bare
-build-base: core18
-
-parts:
-  maven:
-    plugin: dump
-    source: https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
-    source-subdir: bin/
-    filesets:
-      bin: [ usr/bin/* ]
-    stage:
-      - $bin
-    stage-packages:
-      - java-common
-    build-packages:
-      - software-properties-common
+summary: Apache Maven is a software project management and comprehension tool. 
+license: GPL-3.0
+description: |
+  mvn with java 17 installation
+  https://github.com/ozkanpakdil/snap-maven
+  Feel free to open a new PR for newer versions.
+  Source https://maven.apache.org/download.cgi
 
 apps:
   mvn:
-    command: bin/mvn
+    command: opt/apache-maven/bin/mvn
+    environment:
+      LANG: C.UTF-8
+      LANGUAGE: C.UTF-8
+      LC_ALL: C.UTF-8
+      JAVA_HOME: $SNAP/usr/lib/jvm/java-1.17.0-openjdk-$SNAP_ARCH
+      M2_HOME: /opt/apache-maven
+      PATH: $M2_HOME/bin:$PATH
+
+parts:
+  mvn:
+    plugin: nil
+    source: https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.zip
+    stage-packages:
+        - openjdk-17-jdk-headless
+    override-build: |
+      snapcraftctl build
+
+      mkdir -p $SNAPCRAFT_PART_INSTALL/opt
+      mv $SNAPCRAFT_PART_BUILD/apache-* $SNAPCRAFT_PART_INSTALL/opt/apache-maven
+
